@@ -6,16 +6,15 @@ import { ValueCreator } from "./ValueCreator";
 import { Button } from "@/components/ui/Button";
 
 export function VariablePalette() {
-  const { schema, updateVariableValue, addVariable } = useExpressionStore((s) => ({
-    schema: s.schema,
-    updateVariableValue: s.updateVariableValue,
-    addVariable: s.addVariable,
-  }));
+  // ✅ All single-value selectors
+  const variables          = useExpressionStore((s) => s.schema.variables);
+  const updateVariableValue = useExpressionStore((s) => s.updateVariableValue);
+  const addVariable        = useExpressionStore((s) => s.addVariable);
 
-  const [newName, setNewName]   = useState("");
-  const [newType, setNewType]   = useState<"int" | "float">("int");
+  const [newName,  setNewName]  = useState("");
+  const [newType,  setNewType]  = useState<"int" | "float">("int");
   const [newValue, setNewValue] = useState(0);
-  const [showAdd, setShowAdd]   = useState(false);
+  const [showAdd,  setShowAdd]  = useState(false);
 
   const handleAdd = () => {
     if (!newName.trim()) return;
@@ -26,11 +25,9 @@ export function VariablePalette() {
   return (
     <aside className="w-56 shrink-0 flex flex-col gap-4 p-4 border-r border-gray-200 bg-gray-50 min-h-screen">
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">
-          Variables
-        </h3>
+        <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Variables</h3>
         <div className="flex flex-col gap-2">
-          {schema.variables.map((v) => (
+          {variables.map((v) => (
             <div key={v.name} className="flex flex-col gap-1">
               <VariableChip variable={v} />
               <input
@@ -38,8 +35,7 @@ export function VariablePalette() {
                 value={v.value}
                 onChange={(e) => updateVariableValue(v.name, Number(e.target.value))}
                 placeholder="value"
-                className="px-2 py-1 text-xs border border-gray-200 rounded-md
-                           focus:outline-none focus:ring-1 focus:ring-blue-400"
+                className="px-2 py-1 text-xs border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-400"
               />
             </div>
           ))}
@@ -74,11 +70,8 @@ export function VariablePalette() {
           </div>
         )}
       </div>
-
       <div>
-        <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">
-          Literal Value
-        </h3>
+        <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Literal Value</h3>
         <ValueCreator />
       </div>
     </aside>
