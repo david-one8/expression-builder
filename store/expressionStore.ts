@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { current } from "immer";
 import { nanoid } from "nanoid";
 import { DEFAULT_VARIABLES } from "@/constants/defaults";
-import { setAtPath } from "@/lib/utils";
 import type { ExpressionSchema, FormulaRow, OperandNode, Variable } from "@/types/expression";
 
 interface ExpressionStore {
@@ -45,7 +45,10 @@ export const useExpressionStore = create<ExpressionStore>()(
     duplicateFormula: (id) =>
       set((s) => {
         const row = s.schema.formulas.find((f) => f.id === id);
-        if (row) s.schema.formulas.push({ ...structuredClone(row), id: nanoid(12) });
+        if (row) {
+          const plain = current(row);
+          s.schema.formulas.push({ ...plain, id: nanoid(12) });
+        }
       }),
 
     updateFormulaField: (id, field, value) =>
@@ -56,18 +59,26 @@ export const useExpressionStore = create<ExpressionStore>()(
 
     setOperand: (formulaId, path, node) =>
       set((s) => {
-        const idx = s.schema.formulas.findIndex((f) => f.id === formulaId);
-        if (idx !== -1)
-          s.schema.formulas[idx] = setAtPath(s.schema.formulas[idx], path, node);
+        const row = s.schema.formulas.find((f) => f.id === formulaId);
+        if (row) {
+          const parts = path.split(".");
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          let cursor: any = row;
+          for (let i = 0; i < parts.length - 1; i++) cursor = cursor[parts[i]];
+          cursor[parts[parts.length - 1]] = node;
+        }
       }),
 
     clearOperand: (formulaId, path) =>
       set((s) => {
-        const idx = s.schema.formulas.findIndex((f) => f.id === formulaId);
-        if (idx !== -1)
-          s.schema.formulas[idx] = setAtPath(
-            s.schema.formulas[idx], path, null as unknown as OperandNode
-          );
+        const row = s.schema.formulas.find((f) => f.id === formulaId);
+        if (row) {
+          const parts = path.split(".");
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          let cursor: any = row;
+          for (let i = 0; i < parts.length - 1; i++) cursor = cursor[parts[i]];
+          cursor[parts[parts.length - 1]] = null;
+        }
       }),
 
     updateVariableValue: (name, value) =>
