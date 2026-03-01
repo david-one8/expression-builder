@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { VariablePalette } from "@/components/palette/VariablePalette";
 import { ExpressionBuilder } from "@/components/builder/ExpressionBuilder";
 import { JsonPreview } from "@/components/output/JsonPreview";
