@@ -11,7 +11,7 @@ export function ExpressionBuilder() {
     <div className="flex flex-col gap-3">
       {formulas.length === 0 && (
         <div className="text-center py-16 text-gray-400 border-2 border-dashed border-gray-200 rounded-xl">
-          No formulas yet. Click <strong>"+ Add Formula"</strong> to start.
+          No formulas yet. Click <strong>&ldquo;+ Add Formula&rdquo;</strong> to start.
         </div>
       )}
       {formulas.map((row) => <FormulaRow key={row.id} row={row} />)}

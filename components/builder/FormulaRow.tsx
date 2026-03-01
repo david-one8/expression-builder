@@ -1,5 +1,4 @@
 "use client";
-import { useShallow } from "zustand/react/shallow";
 import { FORMULA_OPTIONS, TARGET_TYPE_OPTIONS, FORMULA_SYMBOL } from "@/constants/defaults";
 import { useExpressionStore } from "@/store/expressionStore";
 import { OperandSlot } from "./OperandSlot";
