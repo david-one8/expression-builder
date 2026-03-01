@@ -1,6 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+
+  --color-brand-50:  #EAF2FF;
+  --color-brand-100: #C8DEFF;
+  --color-brand-400: #4C9AFF;
+  --color-brand-600: #0052CC;
+  --color-brand-700: #0043A8;
+}
 
 @layer base {
   * {
@@ -15,28 +23,13 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    background: white;
+    color: #111827;
   }
 }
 
 @layer utilities {
-  .drag-over {
-    @apply border-blue-500 bg-blue-50 scale-105 shadow-md;
-  }
-
-  .slot-empty {
-    @apply border-dashed border-gray-300 bg-[#FAFAF5];
-  }
-
-  .chip-variable {
-    @apply bg-blue-50 border-blue-300 text-blue-700;
-  }
-
-  .chip-value {
-    @apply bg-amber-50 border-amber-300 text-amber-700;
-  }
-
-  .chip-calc {
-    @apply bg-purple-50 border-purple-300 text-purple-700;
-  }
+  .chip-variable { @apply bg-blue-50 border-blue-300 text-blue-700; }
+  .chip-value    { @apply bg-amber-50 border-amber-300 text-amber-700; }
+  .chip-calc     { @apply bg-purple-50 border-purple-300 text-purple-700; }
 }
