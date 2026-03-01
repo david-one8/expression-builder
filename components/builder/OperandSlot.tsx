@@ -8,18 +8,18 @@ import type { DragData, OperandNode } from "@/types/expression";
 
 interface Props {
   formulaId: string;
-  path: string;       // "a" | "b" | "a.a" | "b.b.a" etc.
+  path: string;
   node: OperandNode | null;
-  label: string;      // "A" or "B"
+  label: string;
 }
 
 export function OperandSlot({ formulaId, path, node, label }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref        = useRef<HTMLDivElement>(null);
   const [dragOver, setDragOver] = useState(false);
-  const { setOperand, clearOperand } = useExpressionStore((s) => ({
-    setOperand: s.setOperand,
-    clearOperand: s.clearOperand,
-  }));
+
+  // ✅ Single-value selectors — no object returned, no loop
+  const setOperand  = useExpressionStore((s) => s.setOperand);
+  const clearOperand = useExpressionStore((s) => s.clearOperand);
 
   useEffect(() => {
     if (!ref.current) return;
@@ -43,11 +43,8 @@ export function OperandSlot({ formulaId, path, node, label }: Props) {
       <div
         ref={ref}
         className={cn(
-          "min-w-[140px] min-h-[38px] flex items-center px-2 py-1 rounded-md border-2",
-          "transition-all duration-150",
-          dragOver
-            ? "border-blue-500 bg-blue-50 shadow-md scale-105"
-            : "border-dashed border-gray-300 bg-[#FAFAF5]",
+          "min-w-[140px] min-h-[38px] flex items-center px-2 py-1 rounded-md border-2 transition-all duration-150",
+          dragOver ? "border-blue-500 bg-blue-50 shadow-md scale-105" : "border-dashed border-gray-300 bg-[#FAFAF5]",
           !node && "justify-center"
         )}
       >

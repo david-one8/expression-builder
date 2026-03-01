@@ -1,4 +1,5 @@
 "use client";
+import { useShallow } from "zustand/react/shallow";
 import { FORMULA_OPTIONS, TARGET_TYPE_OPTIONS, FORMULA_SYMBOL } from "@/constants/defaults";
 import { useExpressionStore } from "@/store/expressionStore";
 import { OperandSlot } from "./OperandSlot";
@@ -7,18 +8,15 @@ import { Button } from "@/components/ui/Button";
 import type { FormulaRow as FormulaRowType } from "@/types/expression";
 
 export function FormulaRow({ row }: { row: FormulaRowType }) {
-  const { updateFormulaField, removeFormula, duplicateFormula, schema } =
-    useExpressionStore((s) => ({
-      updateFormulaField: s.updateFormulaField,
-      removeFormula: s.removeFormula,
-      duplicateFormula: s.duplicateFormula,
-      schema: s.schema,
-    }));
+  const updateFormulaField = useExpressionStore((s) => s.updateFormulaField);
+  const removeFormula      = useExpressionStore((s) => s.removeFormula);
+  const duplicateFormula   = useExpressionStore((s) => s.duplicateFormula);
+  const variables          = useExpressionStore((s) => s.schema.variables);
 
-  const variableOptions = schema.variables.map((v) => ({ label: v.name, value: v.name }));
+  const variableOptions = variables.map((v) => ({ label: v.name, value: v.name }));
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-4 flex flex-col gap-3">
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-4 flex flex-col gap-3 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -28,28 +26,28 @@ export function FormulaRow({ row }: { row: FormulaRowType }) {
           <code className="text-[10px] text-gray-400">#{row.id}</code>
         </div>
         <div className="flex items-center gap-2">
-          <Button size="sm" variant="ghost" onClick={() => duplicateFormula(row.id)}>
-            Duplicate
-          </Button>
-          <Button size="sm" variant="danger" onClick={() => removeFormula(row.id)}>
-            Remove
-          </Button>
+          <Button size="sm" variant="ghost"  onClick={() => duplicateFormula(row.id)}>Duplicate</Button>
+          <Button size="sm" variant="danger" onClick={() => removeFormula(row.id)}>Remove</Button>
         </div>
       </div>
 
-      {/* Selectors Row */}
+      {/* Selectors */}
       <div className="flex flex-wrap items-end gap-3">
         <Select
           label="Formula"
           value={row.formula}
           options={FORMULA_OPTIONS}
-          onChange={(e) => updateFormulaField(row.id, "formula", e.target.value as FormulaRowType["formula"])}
+          onChange={(e) =>
+            updateFormulaField(row.id, "formula", e.target.value as FormulaRowType["formula"])
+          }
         />
         <Select
           label="Target Type"
           value={row.targetType}
           options={TARGET_TYPE_OPTIONS}
-          onChange={(e) => updateFormulaField(row.id, "targetType", e.target.value as FormulaRowType["targetType"])}
+          onChange={(e) =>
+            updateFormulaField(row.id, "targetType", e.target.value as FormulaRowType["targetType"])
+          }
         />
         {row.targetType === "variable" && (
           <Select
