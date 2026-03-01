@@ -23,7 +23,7 @@ export function VariablePalette() {
   };
 
   return (
-    <aside className="w-56 shrink-0 flex flex-col gap-4 p-4 border-r border-gray-200 bg-gray-50 min-h-screen">
+    <aside className="w-65 shrink-0 flex flex-col gap-4 p-4 border-r border-gray-200 bg-gray-50 min-h-screen">
       <div>
         <h3 className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-2">Variables</h3>
         <div className="flex flex-col gap-2">
