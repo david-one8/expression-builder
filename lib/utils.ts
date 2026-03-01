@@ -9,14 +9,14 @@ export function cn(...inputs: ClassValue[]) {
 // Walk a dot-path like "a.b.a" to set a deeply nested operand
 export function setAtPath(row: FormulaRow, path: string, node: OperandNode): FormulaRow {
   const parts = path.split(".");
-  const clone  = structuredClone(row) as Record<string, unknown>;
+  const clone  = structuredClone(row) as unknown as Record<string, unknown>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let cursor: any = clone;
   for (let i = 0; i < parts.length - 1; i++) {
     cursor = cursor[parts[i]];
   }
   cursor[parts[parts.length - 1]] = node;
-  return clone as FormulaRow;
+  return clone as unknown as FormulaRow;
 }
 
 export function numberToWords(n: number): string {
