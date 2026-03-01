@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useExpressionStore } from "@/store/expressionStore";
 
 export function JsonPreview() {
+  // ✅ Single-value selector
   const schema = useExpressionStore((s) => s.schema);
   const [open, setOpen] = useState(false);
 
@@ -10,8 +11,7 @@ export function JsonPreview() {
     <div className="border border-gray-200 rounded-xl overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-4 py-2.5
-                   bg-gray-50 text-sm font-medium text-gray-700 hover:bg-gray-100"
+        className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-50 text-sm font-medium text-gray-700 hover:bg-gray-100"
       >
         <span>JSON Schema</span>
         <span>{open ? "▲" : "▼"}</span>
